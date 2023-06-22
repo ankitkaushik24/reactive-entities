@@ -1,0 +1,14 @@
+<mat-toolbar>
+  <h1>My Todo List</h1>
+  <button mat-mini-fab color="primary" (click)="openTodoDialog('add')">
+    <mat-icon>add</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-list>
+  <mat-list-item *ngFor="let item of todos$ | async" [class.completed]="item.completed">
+    {{item.description}}
+    <mat-slide-toggle [checked]="item.completed" (change)="markCompleted(item)">Completed</mat-slide-toggle>
+    <button mat-stroked-button (click)="openTodoDialog('update')">Update</button>
+    <button mat-stroked-button (click)="deleteTodo(item)">Delete</button>
+  </mat-list-item>
+</mat-list>
