@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, Injector} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {TodosService} from "./todos.service";
 import {MatListModule} from "@angular/material/list";
@@ -21,6 +21,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 export class TodosComponent {
   private todosService = inject(TodosService);
   private dialog = inject(MatDialog);
+  private injector = inject(Injector);
 
   todos$ = this.todosService.todos$;
 
@@ -29,11 +30,12 @@ export class TodosComponent {
       data: {
         action
       },
+      injector: this.injector
     })
   }
 
   deleteTodo(todoItem: ITodo) {
-
+    this.todosService.deleteTodo$$.next(todoItem._id);
   }
 
   markCompleted(todoItem: ITodo) {
