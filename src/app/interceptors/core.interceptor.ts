@@ -4,6 +4,6 @@ import {environment} from "../environment";
 
 export const coreInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
   return next(req.clone({
-    url: `${environment.baseUrl}/${req.url}`
+    url: req.url.startsWith('http') ? req.url : `${environment.baseUrl}/${req.url}`
   }));
 }
