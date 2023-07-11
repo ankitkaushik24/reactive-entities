@@ -3,7 +3,7 @@
   <p>Fill in the details</p>
   <mat-form-field>
     <mat-label>Description</mat-label>
-    <input matInput [formControl]="descriptionControl">
+    <input matInput [value]="activeTodo().description" (input)="onDescriptionInput($any($event.target).value)">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>

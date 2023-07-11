@@ -41,12 +41,13 @@ export class TodosService {
   private fetchTodos() {
     return this.http.get<ITodo[]>('todos')
   }
+
   private createTodo(description: string) {
-    return this.http.post<ITodo[]>('todos', { description, completed: false });
+    return this.http.post<ITodo>('todos', {description, completed: false});
   }
 
   private updateTodo(updatedTodo: ITodo) {
-    return this.http.put(`todos/${updatedTodo._id}`, updatedTodo);
+    return this.http.put<ITodo>(`todos/${updatedTodo._id}`, updatedTodo);
   }
 
   private deleteTodo(_id: string) {

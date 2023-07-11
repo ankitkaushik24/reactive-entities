@@ -3,12 +3,17 @@
   <button mat-mini-fab color="primary" (click)="openTodoDialog('add')">
     <mat-icon>add</mat-icon>
   </button>
+  <mat-button-toggle-group name="filter" [value]="todosService.filter$$ | push" (change)="todosService.filter$$.next($event.value)">
+    <mat-button-toggle [value]="null">All</mat-button-toggle>
+    <mat-button-toggle value="completed">Completed</mat-button-toggle>
+    <mat-button-toggle value="pending">Pending</mat-button-toggle>
+  </mat-button-toggle-group>
 </mat-toolbar>
 <mat-list>
   <mat-list-item *ngFor="let item of todos$ | async" [class.completed]="item.completed">
     {{item.description}}
-    <mat-slide-toggle [checked]="item.completed" (change)="markCompleted(item)">Completed</mat-slide-toggle>
-    <button mat-stroked-button (click)="openTodoDialog('update')">Update</button>
+    <mat-slide-toggle [checked]="item.completed" (change)="markCompleted(item, $event.checked)">Completed</mat-slide-toggle>
+    <button mat-stroked-button (click)="openTodoDialog('update', item)">Update</button>
     <button mat-stroked-button (click)="deleteTodo(item)">Delete</button>
   </mat-list-item>
 </mat-list>
