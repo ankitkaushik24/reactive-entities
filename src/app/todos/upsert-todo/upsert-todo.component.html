@@ -3,10 +3,18 @@
   <p>Fill in the details</p>
   <mat-form-field>
     <mat-label>Description</mat-label>
-    <input matInput [formControl]="descriptionControl">
+    <input matInput [formControl]="descriptionControl" />
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button (click)="onSave()" cdkFocusInitial>Save</button>
+  <button
+    mat-button
+    (click)="onSave()"
+    cdkFocusInitial
+    mat-dialog-close
+    [disabled]="descriptionControl.invalid"
+  >
+    Save
+  </button>
 </div>
