@@ -51,14 +51,14 @@ export class TodosService {
   }
 
   private createTodo(description: string) {
-    return this.http.post<ITodo[]>('todos', { description, completed: false });
+    return this.http.post<ITodo>('todos', { description, completed: false });
   }
 
   private updateTodo(id: string, updatedTodo: ITodo) {
-    return this.http.put(`todos/${id}`, updatedTodo);
+    return this.http.put<ITodo>(`todos/${id}`, updatedTodo);
   }
 
   private deleteTodo(id: string) {
-    return this.http.delete(`todos/${id}`);
+    return this.http.delete<ITodo>(`todos/${id}`);
   }
 }
