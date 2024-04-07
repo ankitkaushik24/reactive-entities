@@ -6,7 +6,7 @@
 </mat-toolbar>
 <mat-list>
   <mat-list-item
-    *ngFor="let item of todos$ | async"
+    *ngFor="let item of todosSignal()"
     [class.completed]="item.completed"
   >
     {{ item.description }}

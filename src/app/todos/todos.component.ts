@@ -31,7 +31,8 @@ export class TodosComponent {
   private dialog = inject(MatDialog);
   private injector = inject(Injector);
 
-  todos$ = this.todosService.latestTodos$;
+  // todos$ = this.todosService.todos$;
+  todosSignal = this.todosService.todosSignal;
 
   openTodoDialog(action: 'add' | 'update', current?: ITodo) {
     this.dialog.open(UpsertTodoComponent, {

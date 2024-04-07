@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ITodo } from './todos.model';
 import { map, merge, scan, startWith, Subject, switchMap } from 'rxjs';
+import { rxState } from '@rx-angular/state';
 
 @Injectable()
 export class TodosService {
@@ -66,19 +67,29 @@ export class TodosService {
 
   initialTodos$ = this.fetchTodos();
 
-  todos$ = this.todosAffected$.pipe(
-    startWith(null),
-    switchMap(() => this.fetchTodos())
-  );
+  state = rxState<{ todos: ITodo[] }>(({ connect }) => {
+    connect('todos', this.initialTodos$);
 
-  latestTodos$ = this.initialTodos$.pipe(
-    switchMap((todos) =>
-      this.todosAffected$.pipe(
-        startWith((all) => all),
-        scan((acc, callbackFn) => callbackFn(acc), todos)
-      )
-    )
-  );
+    connect('todos', this.todoAdded$, (oldState, todo) => {
+      return this.onAdded(todo)(oldState.todos);
+    });
+
+    connect('todos', this.todoDeleted$, ({ todos }, todo) => {
+      return this.onDeleted(todo)(todos);
+    });
+
+    connect('todos', this.todoUpdated$, ({ todos }, todo) => {
+      return this.onUpdated(todo)(todos);
+    });
+
+    connect('todos', this.todoCompleted$, ({ todos }, todo) => {
+      return this.onCompleted(todo)(todos);
+    });
+  });
+
+  todos$ = this.state.select('todos');
+
+  todosSignal = this.state.signal('todos');
 
   private fetchTodos() {
     return this.http.get<ITodo[]>('todos');
